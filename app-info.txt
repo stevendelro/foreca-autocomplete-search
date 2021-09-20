@@ -1,0 +1,32 @@
+Hi,
+
+Thank you for signing up for Foreca Weather API free trial.
+
+We have created a Foreca API account for you:
+
+User: stevendelro
+Password: 1pxiVaoy9mIC
+Administrative password (for requesting usage stats): IRYM7WME2SCV
+
+See the documentation at http://developer.foreca.com/
+
+The domains for your account are:
+Weather API: https://fnw-us.foreca.com
+Weather Map API: https://map-us.foreca.com
+
+Example queries:
+curl -d '{"user": "<user>", "password": "<password>"}' 'https://fnw-us.foreca.com/authorize/token?expire_hours=2'
+curl -H 'Authorization: Bearer <token>' 'https://fnw-us.foreca.com/api/v1/location/search/Barcelona?lang=es'
+curl -H 'Authorization: Bearer <token>' 'https://fnw-us.foreca.com/api/v1/forecast/daily/103128760'
+curl -H 'Authorization: Bearer <token>' 'https://map-us.foreca.com/api/v1/capabilities'
+
+We also have a test application for Map API layers that you can access here by using your username and password: http://developer.foreca.com/weathermapapi-us/
+
+Free trial includes access to Foreca Weather API point forecasts (up to 1000 requests/day) and weather maps (up to 1000 requests/day). Please note that API add-ons (https://corporate.foreca.com/en/weather-api-add-ons) are not included in the free trial.
+
+Your free trial account remains active for 12 months. After the free trial or any time during it you have the possibility to sign up for paid API subscription. For more information, please contact our sales at sales@foreca.com. For technical questions or suggestions, contact fd-dev-support@foreca.com.
+
+Best regards,
+
+Foreca
+corporate.foreca.com
