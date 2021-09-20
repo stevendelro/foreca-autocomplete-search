@@ -27,5 +27,7 @@ export default async (req, res) => {
           res.json({ locationInfo, weatherInfo })
         })
     })
-    .catch(error => console.error('ERROR in receiving auth token: ', error))
+    .catch(error =>
+      console.error(`ERROR in retrieving weatherInfo for: ${location}`, error)
+    )
 }
