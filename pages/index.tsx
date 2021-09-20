@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Container from '@material-ui/core/Container'
 
 // figure out how to handle userInput spaces and misspellings
@@ -13,20 +13,11 @@ export default function Index() {
     event.preventDefault()
     const token = cookies.get('weatherAccessToken')
     axios
-      .get(`/api/foreca/getWeather/${userInput}/${token}`)
+      .get(`/api/foreca/getWeather/${encodeURIComponent(userInput)}/${token}`)
       .then(response => console.log(`response.data`, response.data))
       .catch(error => console.error('ERROR IN onSubmit', error))
     setUserInput('')
   }
-
-  useEffect(() => {
-    axios.get('/api/foreca/auth').then(({ data }) => {
-      cookies.set('weatherAccessToken', data.accessToken, {
-        path: '/',
-        secure: true,
-      })
-    })
-  }, [])
 
   return (
     <Container maxWidth='sm'>
