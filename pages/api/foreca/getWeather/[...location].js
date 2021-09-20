@@ -6,8 +6,30 @@ import Cookies from 'universal-cookie'
 //  2. GET: Use mapBox's lat/lon to get daily (one week) weather data from Foreca API.
 
 let locationInfo
+const weatherInfo = {}
 const mapBoxBaseUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places'
-const forecaBaseUrl = 'https://fnw-us.foreca.com/api/v1'
+const forecaBaseUrl = 'https://fnw-us.foreca.com/api/v1/api/v1/'
+
+const getWeatherDetails = (timeFrame, axiosConfig) => {
+  const { lon, lat, placeName } = locationInfo
+  let keyName
+  return axios
+    .get(`${forecaBaseUrl}/${timeFrame}/${lon},${lat}`, axiosConfig)
+    .then(response => {
+      timeFrame.includes('forecast/')
+        ? (keyName = timeFrame.slice(9, timeFrame.length))
+        : null
+      timeFrame.includes('forecast/15')
+        ? (keyName = timeFrame.slice(11, timeFrame.length))
+        : null
+      response.data.forecast
+        ? (weatherInfo[keyName] = response.data.forecast)
+        : (weatherInfo[timeFrame] = response.data.current)
+    })
+    .catch(error =>
+      console.error(`ERROR in retrieving weatherInfo for: ${placeName}`, error)
+    )
+}
 
 export default async (req, res) => {
   const [userInput, token] = req.query.location
@@ -37,21 +59,14 @@ export default async (req, res) => {
       }
     })
     .then(() => {
-      // 2. GET: Use mapBox's lat/lon to get daily (one week) weather data from Foreca API.
-      const { lon, lat, placeName } = locationInfo
-      axios
-        .get(`${forecaBaseUrl}/forecast/daily/${lon},${lat}`, axiosConfig)
-        .then(response => {
-          const weatherInfo = response.data.forecast
-          // RESPOND: Send back information to the front
-          res.json({ locationInfo, weatherInfo })
-        })
-        .catch(error =>
-          console.error(
-            `ERROR in retrieving weatherInfo for: ${placeName}`,
-            error
-          )
-        )
+      Promise.all([
+        getWeatherDetails('current', axiosConfig),
+        getWeatherDetails('forecast/15minutely', axiosConfig),
+        getWeatherDetails('forecast/hourly', axiosConfig),
+        getWeatherDetails('forecast/daily', axiosConfig),
+      ])
+        .then(() => res.json({ locationInfo, weatherInfo }))
+        .catch(error => console.error('ERROR in Promise.all(): ', error))
     })
     .catch(error => {
       const errStr = 'ERROR in retrieving placeName from raw userInput:'
