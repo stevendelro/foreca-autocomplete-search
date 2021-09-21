@@ -26,6 +26,7 @@ export default function MyApp(props: AppProps) {
           cookies.set('weatherAccessToken', data.accessToken, {
             path: '/',
             secure: true,
+            maxAge: 3600,
           })
         })
   }, [])

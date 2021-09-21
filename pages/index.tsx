@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Container from '@material-ui/core/Container'
 
 // figure out how to handle userInput spaces and misspellings
+// setup a dropdown to choose what language weather data should come back in
 
 export default function Index() {
   const [userInput, setUserInput] = useState('')
