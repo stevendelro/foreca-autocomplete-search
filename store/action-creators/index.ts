@@ -1,14 +1,14 @@
+import { Dispatch } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import { Dispatch } from 'react'
-import { ActionType } from '../action-types'
+
 import { Action } from '../actions'
+import { ActionType } from '../action-types'
 
 export const fetchData = (userInput: string) => {
   const cookies = new Cookies()
   const token = cookies.get('weatherAccessToken')
-
-  return async (dispatch: Dispatch<Action>) => {
+  return (dispatch: Dispatch<Action>) => {
     dispatch({
       type: ActionType.FETCH_DATA_STARTED,
     })

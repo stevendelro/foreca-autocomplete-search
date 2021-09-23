@@ -1,26 +1,26 @@
 import { ActionType } from '../action-types'
 
-interface fetchDataAction {
+interface fetchData {
   type: ActionType.FETCH_DATA
   payload: any
 }
 
-interface fetchDataStartedAction {
+interface fetchDataStarted {
   type: ActionType.FETCH_DATA_STARTED
 }
 
-interface fetchDataSuccessAction {
+interface fetchDataSuccess {
   type: ActionType.FETCH_DATA_SUCCESS
   payload: object
 }
 
-interface fetchDataErrorAction {
+interface fetchDataError {
   type: ActionType.FETCH_DATA_ERROR
   payload: any
 }
 
 export type Action =
-  | fetchDataAction
-  | fetchDataStartedAction
-  | fetchDataSuccessAction
-  | fetchDataErrorAction
+  | fetchData
+  | fetchDataStarted
+  | fetchDataSuccess
+  | fetchDataError
