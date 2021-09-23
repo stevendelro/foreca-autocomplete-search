@@ -1,23 +1,24 @@
-import React, { useEffect } from 'react'
-import axios from 'axios'
-import Cookies from 'universal-cookie'
-import Head from 'next/head'
 import { AppProps } from 'next/app'
 import { ThemeProvider } from '@material-ui/core/styles'
+import axios from 'axios'
+import Cookies from 'universal-cookie'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import Head from 'next/head'
+import React, { useEffect } from 'react'
+
+import { wrapper } from '../store'
 import theme from '../src/theme'
 
-export default function MyApp(props: AppProps) {
+const MyApp = (props: AppProps) => {
   const { Component, pageProps } = props
   const cookies = new Cookies()
-
   // Remove the server-side injected CSS.
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     jssStyles && jssStyles.parentElement!.removeChild(jssStyles)
   }, [])
 
-  // Initialize weather API access token
+  // Initialize weather API access token, set cookie.
   useEffect(() => {
     const weatherAccessToken = cookies.get('weatherAccessToken')
     weatherAccessToken
@@ -48,3 +49,6 @@ export default function MyApp(props: AppProps) {
     </React.Fragment>
   )
 }
+
+// Return the app wrapped in withRedux
+export default wrapper.withRedux(MyApp)
