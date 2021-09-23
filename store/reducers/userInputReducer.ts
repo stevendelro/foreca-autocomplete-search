@@ -1,7 +1,7 @@
 import { Action } from '../actions'
 import { ActionType } from '../action-types'
 
-interface RespositoresState {
+interface fetchedDataState {
   loading: boolean
   error: object | null
   locationInfo: object
@@ -16,9 +16,9 @@ const initialState = {
 }
 
 const userInputReducer = (
-  state: RespositoresState = initialState,
+  state: fetchedDataState = initialState,
   action: Action
-): RespositoresState => {
+): fetchedDataState => {
   switch (action.type) {
     case ActionType.FETCH_DATA_STARTED:
       return {
