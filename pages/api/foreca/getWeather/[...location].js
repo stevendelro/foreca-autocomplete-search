@@ -31,11 +31,19 @@ const getLocationDetails = url => {
 //    Performs an API call to Foreca by requested time interval.
 //    Sets the response as a key on weatherInfo.
 //    Returns a promise.
-const getWeatherDetails = (timeFrame, axiosConfig) => {
+const getWeatherDetails = (
+  timeFrame,
+  axiosConfig,
+  windUnit = 'MPH',
+  tempUnit = 'F'
+) => {
   const { lon, lat, placeName } = locationInfo
   let keyName
   return axios
-    .get(`${forecaBaseUrl}/${timeFrame}/${lon},${lat}`, axiosConfig)
+    .get(
+      `${forecaBaseUrl}/${timeFrame}/${lon},${lat}?tempunit=${tempUnit}&windunit=${windUnit}`,
+      axiosConfig
+    )
     .then(response => {
       // Prepare the keyName for proper object construction
       timeFrame.includes('forecast/')
@@ -55,7 +63,7 @@ const getWeatherDetails = (timeFrame, axiosConfig) => {
 }
 
 export default async (req, res) => {
-  const [userInput, token] = req.query.location
+  const [userInput, token, windUnit, tempUnit] = req.query.location
   const axiosConfig = {
     headers: {
       Authorization: `Bearer ${token}`,
