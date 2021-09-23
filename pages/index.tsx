@@ -1,22 +1,24 @@
-import axios from 'axios'
-import Cookies from 'universal-cookie'
-import React, { useState } from 'react'
+import { bindActionCreators, Dispatch, ActionCreator } from 'redux'
+import { connect } from 'react-redux'
 import Container from '@material-ui/core/Container'
+import React, { useState } from 'react'
 
-// figure out how to handle userInput spaces and misspellings
+import { Action } from '../store/actions'
+import { fetchData } from '../store/action-creators'
+
 // setup a dropdown to choose what language weather data should come back in
 
-export default function Index() {
+type FetchData = {
+  fetchData: (userInput: string) => void
+}
+
+const Index = ({ fetchData }: FetchData) => {
   const [userInput, setUserInput] = useState('')
-  const cookies = new Cookies()
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const token = cookies.get('weatherAccessToken')
-    axios
-      .get(`/api/foreca/getWeather/${encodeURIComponent(userInput)}/${token}`)
-      .then(response => console.log(`response.data`, response.data))
-      .catch(error => console.error('ERROR IN onSubmit', error))
+    fetchData(userInput)
+
     setUserInput('')
   }
 
@@ -34,3 +36,9 @@ export default function Index() {
     </Container>
   )
 }
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  fetchData: bindActionCreators(fetchData, dispatch),
+})
+
+export default connect(null, mapDispatchToProps)(Index)
