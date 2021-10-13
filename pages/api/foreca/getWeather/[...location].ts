@@ -1,28 +1,32 @@
 import axios from 'axios'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { HashTable } from '../../../../types/util'
 
 // In this file:
 //  1. GET: Send raw userInput (potentially erroneous) to MapBox to retrieve location's lat/lon.
 //  2. Multiple GET: Use mapBox's lat/lon to get weather data (at preferred the time interval) from Foreca API.
 
-let locationInfo
-const weatherInfo = {}
 const mapBoxBaseUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places'
 const forecaBaseUrl = 'https://fnw-us.foreca.com/api/v1/api/v1'
+const weatherInfo: HashTable<object | object[]> = {}
+const locationInfo = {
+  lon: '',
+  lat: '',
+  placeName: '',
+}
 
 // 1. GET: Send raw userInput (potentially erroneous) to MapBox to retrieve location's lat/lon.
 //    Performs an API call to MapBox API with userInput.
 //    Sets the response as locationData
 //    Returns a promise.
-const getLocationDetails = url => {
+const getLocationDetails = (url: string) => {
   return axios.get(url).then(response => {
     // Filter out empty responses. Mapbox will still respond with 200's on some bad calls.
     if (response.data.features !== []) {
       // Set the appropriate response data to locationInfo.
-      locationInfo = {
-        lon: response.data.features[0].center[0],
-        lat: response.data.features[0].center[1],
-        placeName: response.data.features[0].place_name,
-      }
+      locationInfo.lon = response.data.features[0].center[0]
+      locationInfo.lat = response.data.features[0].center[1]
+      locationInfo.placeName = response.data.features[0].place_name
     }
   })
 }
@@ -32,13 +36,13 @@ const getLocationDetails = url => {
 //    Sets the response as a key on weatherInfo.
 //    Returns a promise.
 const getWeatherDetails = (
-  timeFrame,
-  axiosConfig,
+  timeFrame: string,
+  axiosConfig: { headers: { Authorization: string } },
   windUnit = 'MPH',
   tempUnit = 'F'
 ) => {
   const { lon, lat, placeName } = locationInfo
-  let keyName
+  let keyName = ''
   return axios
     .get(
       `${forecaBaseUrl}/${timeFrame}/${lon},${lat}?tempunit=${tempUnit}&windunit=${windUnit}`,
@@ -62,7 +66,7 @@ const getWeatherDetails = (
     )
 }
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const [userInput, token, windUnit, tempUnit] = req.query.location
   const axiosConfig = {
     headers: {
