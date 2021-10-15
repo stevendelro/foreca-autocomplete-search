@@ -1,5 +1,5 @@
 import { Action } from '../actions'
-import { ActionType } from '../action-types'
+import { ActionTypes } from '../action-types'
 
 interface fetchedDataState {
   loading: boolean
@@ -20,18 +20,18 @@ const userInputReducer = (
   action: Action
 ): fetchedDataState => {
   switch (action.type) {
-    case ActionType.FETCH_DATA_STARTED:
+    case ActionTypes.FETCH_DATA_STARTED:
       return {
         ...state,
         loading: true,
       }
-    case ActionType.FETCH_DATA:
+    case ActionTypes.FETCH_DATA:
       return {
         ...state,
         locationInfo: action.payload.locationInfo,
         weatherInfo: action.payload.weatherInfo,
       }
-    case ActionType.FETCH_DATA_SUCCESS:
+    case ActionTypes.FETCH_DATA_SUCCESS:
       return {
         ...state,
         loading: false,
