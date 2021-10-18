@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { Action } from '../store/actions'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
+import { LocationWeatherState } from '../store/reducers/types'
+import { Spinner } from '../components/Spinner'
+import { StoreState } from '../store/reducers/index'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { fetchData } from '../store/action-creators'
@@ -12,6 +15,7 @@ import { fetchData } from '../store/action-creators'
 
 interface IndexProps {
   fetchData(userInput?: string, lat?: number, lon?: number): Function
+  locationWeather: LocationWeatherState
 }
 
 interface GeolocationInfo {
@@ -30,8 +34,9 @@ const getPosition = async (): Promise<any> => {
   }
 }
 
-const Index = ({ fetchData }: IndexProps): JSX.Element => {
+const Index = ({ fetchData, locationWeather }: IndexProps): JSX.Element => {
   const [userInput, setUserInput] = useState('')
+
   // const [renderedComponent, setRenderedComponent] = useState(null)
 
   // Receive coordinates from geolocation. If denied, display simple search page.
@@ -59,21 +64,30 @@ const Index = ({ fetchData }: IndexProps): JSX.Element => {
   }
 
   return (
-    <Container maxWidth='sm'>
-      <form onSubmit={onSubmit}>
-        <TextField
-          label='Enter Location'
-          value={userInput}
-          onChange={e => setUserInput(e.target.value)}
-        />
-        <Button type='submit'>Submit</Button>
-      </form>
-    </Container>
+    <>
+      <Spinner isLoading={locationWeather.loading} />
+      <Container maxWidth='sm'>
+        <form onSubmit={onSubmit}>
+          <TextField
+            label='Enter Location'
+            value={userInput}
+            onChange={e => setUserInput(e.target.value)}
+          />
+          <Button type='submit'>Submit</Button>
+        </form>
+      </Container>
+    </>
   )
+}
+
+const mapStateToProps = ({
+  locationWeather,
+}: StoreState): { locationWeather: LocationWeatherState } => {
+  return { locationWeather }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   fetchData: bindActionCreators(fetchData, dispatch),
 })
 
-export default connect(null, mapDispatchToProps)(Index)
+export default connect(mapStateToProps, mapDispatchToProps)(Index)
