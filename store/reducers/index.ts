@@ -1,7 +1,12 @@
+import { LocationWeatherState } from './types'
 import { combineReducers } from 'redux'
 import userInputReducer from './userInputReducer'
 
-const reducers = combineReducers({
+export interface StoreState {
+  locationWeather: LocationWeatherState
+}
+
+const reducers = combineReducers<StoreState>({
   locationWeather: userInputReducer,
 })
 
