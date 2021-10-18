@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { HashTable } from '../../../../types/util'
+import { HashTable } from '../../../../types'
 import axios from 'axios'
 
 // In this file:

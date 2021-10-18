@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { Action } from '../store/actions'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
+import { GeolocationInfo } from '../types'
 import { LocationWeatherState } from '../store/reducers/types'
 import { Spinner } from '../components/Spinner'
 import { StoreState } from '../store/reducers/index'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { fetchData } from '../store/action-creators'
+import { getPosition } from '../util'
 
 // setup a dropdown to choose what language weather data should come back in
 
@@ -18,42 +20,18 @@ interface IndexProps {
   locationWeather: LocationWeatherState
 }
 
-interface GeolocationInfo {
-  coords: { latitude: number; longitude: number }
-  timestamp: number
-}
-
-// Get permission to use browser's geolocation API
-const getPosition = async (): Promise<any> => {
-  try {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject)
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 const Index = ({ fetchData, locationWeather }: IndexProps): JSX.Element => {
   const [userInput, setUserInput] = useState('')
-
-  // const [renderedComponent, setRenderedComponent] = useState(null)
 
   // Receive coordinates from geolocation. If denied, display simple search page.
   useEffect(() => {
     getPosition()
       .then(async ({ coords }: GeolocationInfo) => {
         fetchData(undefined, coords.latitude, coords.longitude)
-        // const { placeName } = await getLocationByCoords([
-        //   coords.latitude,
-        //   coords.longitude,
-        // ])
-        // Router.push('/[location]/today', `/${getShortName(placeName)}/today`)
       })
       .catch(error => {
         console.log(`error`, error)
-        // denyGeo()
-        // setRenderedComponent(<Search />)
+        // HANDLE USER DENIAL OF GEOLOCATION
       })
   }, [])
 
