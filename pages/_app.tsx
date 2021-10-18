@@ -7,7 +7,7 @@ import Head from 'next/head'
 import React, { useEffect } from 'react'
 
 import { wrapper } from '../store'
-import theme from '../src/theme'
+import theme from '../components/theme'
 
 const MyApp = (props: AppProps) => {
   const { Component, pageProps } = props
