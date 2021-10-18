@@ -1,19 +1,27 @@
-import { Dispatch } from 'react'
-import axios from 'axios'
-import Cookies from 'universal-cookie'
-
 import { Action } from '../actions'
 import { ActionTypes } from '../action-types'
+import Cookies from 'universal-cookie'
+import { Dispatch } from 'redux'
+import axios from 'axios'
 
-export const fetchData = (userInput: string) => {
+export const fetchData = (
+  userInput?: string,
+  lat?: number,
+  lon?: number
+): Function => {
   const cookies = new Cookies()
   const token = cookies.get('weatherAccessToken')
-  return (dispatch: Dispatch<Action>) => {
+
+  const searchParams = userInput
+    ? encodeURIComponent(userInput)
+    : `${lon},${lat}`
+
+  return (dispatch: Dispatch<Action>): void => {
     dispatch({
       type: ActionTypes.FETCH_DATA_STARTED,
     })
     axios
-      .get(`/api/foreca/getWeather/${encodeURIComponent(userInput)}/${token}`)
+      .get<object>(`/api/foreca/getWeather/${searchParams}/${token}`)
       .then(({ data }) => {
         dispatch({
           type: ActionTypes.FETCH_DATA_SUCCESS,

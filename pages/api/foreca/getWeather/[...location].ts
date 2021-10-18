@@ -1,6 +1,7 @@
-import axios from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { HashTable } from '../../../../types/util'
+import axios from 'axios'
 
 // In this file:
 //  1. GET: Send raw userInput (potentially erroneous) to MapBox to retrieve location's lat/lon.
@@ -67,16 +68,16 @@ const getWeatherDetails = (
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const [userInput, token, windUnit, tempUnit] = req.query.location
+  const [searchParams, token, windUnit, tempUnit] = req.query.location
   const axiosConfig = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   }
 
-  // MapBox config - MapBox is used to handled potential erroneous userInput
+  // MapBox config - MapBox is used to handled potential erroneous searchParams
   const urlComplete = `${mapBoxBaseUrl}/${encodeURIComponent(
-    userInput
+    searchParams
   )}.json?limit=1&access_token=${process.env.MAPBOX_API_KEY}`
 
   // 1. GET: Send raw userInput (potentially erroneous) to MapBox to retrieve location's lat/lon.
