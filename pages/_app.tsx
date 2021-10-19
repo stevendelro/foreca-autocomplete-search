@@ -1,13 +1,13 @@
+import React, { useEffect } from 'react'
+
 import { AppProps } from 'next/app'
-import { ThemeProvider } from '@material-ui/core/styles'
-import axios from 'axios'
 import Cookies from 'universal-cookie'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Head from 'next/head'
-import React, { useEffect } from 'react'
-
+import { ThemeProvider } from '@material-ui/core/styles'
+import axios from 'axios'
+import theme from '../theme'
 import { wrapper } from '../store'
-import theme from '../components/theme'
 
 const MyApp = (props: AppProps) => {
   const { Component, pageProps } = props
