@@ -17,6 +17,9 @@ const theme = createTheme({
       default: '#fff',
     },
   },
+  typography: {
+    htmlFontSize: 10,
+  },
 })
 
 export default theme

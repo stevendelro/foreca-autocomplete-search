@@ -2,21 +2,22 @@ import { Dispatch, bindActionCreators } from 'redux'
 import React, { useEffect, useState } from 'react'
 
 import { Action } from '../store/actions'
-import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
+// import DailyList from '../components/daily'
 import { GeolocationInfo } from '../types'
 import { LocationWeatherState } from '../store/reducers/types'
+import { SearchBar } from '../components/SearchBar'
 import { Spinner } from '../components/Spinner'
 import { StoreState } from '../store/reducers/index'
-import TextField from '@material-ui/core/TextField'
+import { cityNames } from '../cityNames'
 import { connect } from 'react-redux'
 import { fetchData } from '../store/action-creators'
 import { getPosition } from '../util'
 
 // setup a dropdown to choose what language weather data should come back in
 
-interface IndexProps {
-  fetchData(userInput?: string, lat?: number, lon?: number): Function
+type IndexProps = {
+  fetchData: (userInput?: string, lat?: number, lon?: number) => Function
   locationWeather: LocationWeatherState
 }
 
@@ -35,24 +36,16 @@ const Index = ({ fetchData, locationWeather }: IndexProps): JSX.Element => {
       })
   }, [])
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault()
-    fetchData(userInput)
-    setUserInput('')
-  }
-
   return (
     <>
       <Spinner isLoading={locationWeather.loading} />
       <Container maxWidth='sm'>
-        <form onSubmit={onSubmit}>
-          <TextField
-            label='Enter Location'
-            value={userInput}
-            onChange={e => setUserInput(e.target.value)}
-          />
-          <Button type='submit'>Submit</Button>
-        </form>
+        <SearchBar
+          cityNames={cityNames}
+          userInput={userInput}
+          fetchData={fetchData}
+          setUserInput={setUserInput}
+        />
       </Container>
     </>
   )
