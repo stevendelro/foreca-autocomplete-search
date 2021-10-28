@@ -63,7 +63,8 @@ const OptionsList = ({
   list.forEach((listItem, index) => {
     // From the list of listItems, create a varable to match with the userInput
     const option = listItem.toLowerCase().substring(0, userInput.length)
-    if (index <= 9 && option === userInput.toLowerCase()) {
+
+    if (renderedComponents.length <= 9 && option === userInput.toLowerCase()) {
       renderedListItems.push(listItem)
       renderedComponents.push(
         <Option
@@ -77,15 +78,13 @@ const OptionsList = ({
         />
       )
     }
-    console.log(`renderedComponents`, renderedComponents)
   })
 
   useEffect(() => {
     setSuggestionLength(renderedComponents.length)
     setSuggestionList(renderedListItems)
   }, [])
-
-  if (closeList || renderedComponents.length > 1) return <div />
+  if (closeList || renderedComponents.length <= 1) return <div />
   return (
     <div className={classes.optionsList}>
       <Divider className={classes.divider} /> {renderedComponents}
