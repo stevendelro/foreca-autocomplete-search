@@ -9,6 +9,7 @@ type OptionProps = {
   option: string
   setSelectedOption: Dispatch<SetStateAction<string>>
   setUserInput: Dispatch<SetStateAction<string>>
+  getWeatherAndLocation: Function
   userInput: string
 }
 
@@ -17,6 +18,7 @@ const Option = ({
   option,
   setSelectedOption,
   setUserInput,
+  getWeatherAndLocation,
   userInput,
 }: OptionProps): JSX.Element => {
   useEffect(() => {
@@ -52,6 +54,9 @@ const Option = ({
         padding: theme.spacing(0.9, 1.2),
         flexGrow: 1,
       },
+      textOption: {
+        width: '100%',
+      },
     })
   )
   const classes = useStyles()
@@ -64,26 +69,26 @@ const Option = ({
     <span>{option.slice(userInput.length, option.length)}</span>
   )
   return (
-    <p>{option}</p>
-    // <Grid
-    //   container
-    //   direction='row'
-    //   justifyContent='flex-start'
-    //   className={classes.option}>
-    //   <Grid item className={classes.searchIconContainer}>
-    //     <MagnifyGlass />
-    //   </Grid>
-    //   <Grid
-    //     item
-    //     className={
-    //       isFocused ? classes.listItemArrowSelected : classes.listItem
-    //     }>
-    //     <div onClick={() => setUserInput(option)}>
-    //       {styledUserInput}
-    //       {appendedChars}
-    //     </div>
-    //   </Grid>
-    // </Grid>
+    <Grid
+      container
+      onMouseDown={() => {
+        getWeatherAndLocation(null, option)
+      }}
+      direction='row'
+      justifyContent='flex-start'
+      className={classes.option}>
+      <Grid item className={classes.searchIconContainer}>
+        <MagnifyGlass />
+      </Grid>
+      <Grid
+        item
+        className={
+          isFocused ? classes.listItemArrowSelected : classes.listItem
+        }>
+        {styledUserInput}
+        {appendedChars}
+      </Grid>
+    </Grid>
   )
 }
 
