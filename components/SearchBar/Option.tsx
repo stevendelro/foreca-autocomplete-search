@@ -72,6 +72,7 @@ const Option = ({
     <Grid
       container
       onMouseDown={() => {
+        // setUserInput('')
         getWeatherAndLocation(null, option)
       }}
       direction='row'
