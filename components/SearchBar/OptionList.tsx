@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     optionsList: {
       width: '100%',
       background: '#fff',
-      border: '1px solid #dfe1e5',
+      border: 'none',
       borderRadius: theme.spacing(0, 0, 3, 3),
       overflow: 'hidden',
       flexDirection: 'column',

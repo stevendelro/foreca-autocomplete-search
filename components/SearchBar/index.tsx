@@ -143,7 +143,7 @@ const SearchBar = ({
         justifyContent: 'center',
         color: '#00000039',
         cursor: 'pointer',
-        height: '51px',
+        height: 'auto',
         width: '51px',
         '&:hover': {
           color: '#000',
@@ -155,7 +155,7 @@ const SearchBar = ({
         borderRadius: userInput ? theme.spacing(3, 3, 0, 0) : theme.spacing(3),
         paddingLeft: theme.spacing(1.5),
         maxWidth: theme.spacing(73),
-        height: theme.spacing(6),
+        height: 'auto',
         width: 'auto',
         color: '#000',
         fontFamily: 'Roboto, sans-serif',
@@ -163,9 +163,10 @@ const SearchBar = ({
         boxShadow: userInput ? theme.shadows[3] : 'none',
         '&:hover': {
           outline: 'none',
-          border: '1px solid #dfe1e5',
+          border: 'none',
+          // border: '1px solid #dfe1e5',
           borderBottom: 'none',
-          boxShadow: '0 4px 6px rgb(32 33 36 / 28%)',
+          boxShadow: '0 1px 6px rgb(32 33 36 / 28%)',
         },
       },
       iconInputContainer: {
